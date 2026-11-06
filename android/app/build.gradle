@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
+apply plugin: "org.jetbrains.kotlin.kapt"
 apply plugin: "com.facebook.react"
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
@@ -55,6 +56,10 @@ android {
 }
 
 dependencies {
+    implementation("com.facebook.react:react-android")
+    if (hermesEnabled.toBoolean()) {
+        implementation("com.facebook.react:hermes-android")
+    }
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0"
     implementation "androidx.room:room-runtime:2.7.0"
     implementation "androidx.room:room-ktx:2.7.0"
