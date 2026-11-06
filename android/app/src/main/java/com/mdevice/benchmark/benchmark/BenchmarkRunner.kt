@@ -390,6 +390,7 @@ class BenchmarkRunner(private val context: Context) {
             put("memReadMBps", result.memReadMBps)
             put("memWriteMBps", result.memWriteMBps)
             put("randomLatencyNs", result.randomLatencyNs)
+            put("memRandomLatencyNs", result.randomLatencyNs)
             put("storageReadMBps", result.storageReadMBps)
             put("storageWriteMBps", result.storageWriteMBps)
             put("gpuFps", result.gpuFps)

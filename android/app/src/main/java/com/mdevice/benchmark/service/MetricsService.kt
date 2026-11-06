@@ -13,6 +13,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.mdevice.benchmark.bridge.MetricsCollector
 import kotlinx.coroutines.CoroutineScope
@@ -97,9 +98,13 @@ class MetricsService : Service() {
         val prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         intervalMs = prefs.getLong(PREF_INTERVAL_MS, 1000L).coerceIn(500L, 5000L)
         createChannel()
-        registerReceiver(screenReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF).apply {
-            addAction(Intent.ACTION_SCREEN_ON)
-        })
+        ContextCompat.registerReceiver(
+            this, screenReceiver,
+            IntentFilter(Intent.ACTION_SCREEN_OFF).apply {
+                addAction(Intent.ACTION_SCREEN_ON)
+            },
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
         LocalBroadcastManager.getInstance(this).registerReceiver(
             controlReceiver,
             IntentFilter(ACTION_STOP).apply {
@@ -118,6 +123,10 @@ class MetricsService : Service() {
             )
         } else {
             startForeground(NOTIFICATION_ID, notification)
+        }
+        if (intent?.action == ACTION_STOP) {
+            stopSelf()
+            return START_NOT_STICKY
         }
         if (intent?.action == ACTION_PAUSE) paused = true
         if (intent?.action == ACTION_RESUME) paused = false
@@ -170,12 +179,15 @@ class MetricsService : Service() {
     }
 
     private fun buildNotification(): Notification {
-        val stopIntent = PendingIntent.getBroadcast(
-            this, 1, Intent(ACTION_STOP),
+        val stopIntent = PendingIntent.getService(
+            this, 1,
+            Intent(this, MetricsService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
-        val toggleIntent = PendingIntent.getBroadcast(
-            this, 2, Intent(if (paused) ACTION_RESUME else ACTION_PAUSE),
+        val toggleIntent = PendingIntent.getService(
+            this, 2,
+            Intent(this, MetricsService::class.java)
+                .setAction(if (paused) ACTION_RESUME else ACTION_PAUSE),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
         return NotificationCompat.Builder(this, CHANNEL_ID)
