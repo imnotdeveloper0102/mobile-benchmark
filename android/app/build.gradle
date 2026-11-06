@@ -71,7 +71,6 @@ dependencies {
 }
 
 react {
-    jsMainModulePath = "index"
     bundleCommand = "bundle"
     autolinkLibrariesWithApp()
 }
