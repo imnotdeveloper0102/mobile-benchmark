@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Benchmark Performance — icon ve tay, 100% dev, khong dung anh AI. -->
+  <!-- Nen phang #0B0B0C, luoi mo #1A1A1C, duong pulse #FFB800. -->
+  <rect width="512" height="512" fill="#0B0B0C"/>
+  <g stroke="#1A1A1C" stroke-width="2">
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+  </g>
+  <polyline points="72,300 170,300 210,300 250,180 285,380 320,240 345,300 440,300"
+    fill="none" stroke="#FFB800" stroke-width="26" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="440" cy="300" r="14" fill="#FFB800"/>
+</svg>
